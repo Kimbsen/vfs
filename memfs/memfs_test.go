@@ -587,7 +587,11 @@ func TestModTime(t *testing.T) {
 func TestChtimes(t *testing.T) {
 	fs := Create()
 	tBeforeWrite := time.Now()
-	writeFile(fs, "/readme.txt", os.O_CREATE|os.O_RDWR, 0666, []byte{0, 0, 0})
+	f, err := vfs.Create(fs, "/readme.txt")
+	require.NoError(t, err)
+	_, err = f.Write([]byte("content"))
+	require.NoError(t, err)
+	require.NoError(t, f.Close())
 
 	fi, err := fs.Stat("/readme.txt")
 	require.NoError(t, err)
