@@ -6,7 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/blang/vfs"
+	"github.com/Kimbsen/vfs"
+
+	_ "github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestInterface(t *testing.T) {
@@ -579,4 +582,22 @@ func TestModTime(t *testing.T) {
 	if tAfterRead != mtimeAfterWrite {
 		t.Error("Open with O_RDONLY should not modify mtime")
 	}
+}
+
+func TestChtimes(t *testing.T) {
+	fs := Create()
+	tBeforeWrite := time.Now()
+	writeFile(fs, "/readme.txt", os.O_CREATE|os.O_RDWR, 0666, []byte{0, 0, 0})
+
+	fi, err := fs.Stat("/readme.txt")
+	require.NoError(t, err)
+	require.NotEqual(t, tBeforeWrite.UnixNano(), fi.ModTime().UnixNano())
+	setTime := fi.ModTime()
+	require.NoError(t, fs.Chtimes("/readme.txt", time.Now(), tBeforeWrite))
+
+	fi, err = fs.Stat("/readme.txt")
+	require.NoError(t, err)
+	require.NotEqual(t, fi.ModTime().UnixNano(), setTime.UnixNano())
+	require.Equal(t, fi.ModTime().UnixNano(), tBeforeWrite.UnixNano())
+
 }

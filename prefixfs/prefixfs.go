@@ -2,8 +2,9 @@ package prefixfs
 
 import (
 	"os"
+	"time"
 
-	"github.com/blang/vfs"
+	"github.com/Kimbsen/vfs"
 )
 
 // A FS that prefixes the path in each vfs.Filesystem operation.
@@ -60,4 +61,9 @@ func (fs *FS) Lstat(name string) (os.FileInfo, error) {
 // ReadDir implements vfs.Filesystem.
 func (fs *FS) ReadDir(path string) ([]os.FileInfo, error) {
 	return fs.Filesystem.ReadDir(fs.PrefixPath(path))
+}
+
+func (fs *FS) Chtimes(name string, atime, mtime time.Time) error {
+	panic("todo")
+	return nil
 }

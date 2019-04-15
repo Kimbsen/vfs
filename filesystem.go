@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"strings"
+	"time"
 )
 
 var (
@@ -29,6 +30,7 @@ type Filesystem interface {
 	Stat(name string) (os.FileInfo, error)
 	Lstat(name string) (os.FileInfo, error)
 	ReadDir(path string) ([]os.FileInfo, error)
+	Chtimes(name string, atime, mtime time.Time) error
 }
 
 // File represents a File with common operations.

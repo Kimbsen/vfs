@@ -2,10 +2,11 @@ package mountfs
 
 import (
 	"errors"
-	"github.com/blang/vfs"
+	"github.com/Kimbsen/vfs"
 	"os"
 	filepath "path"
 	"strings"
+	"time"
 )
 
 // ErrBoundary is returned if an operation
@@ -176,4 +177,9 @@ func (fs MountFS) ReadDir(path string) ([]os.FileInfo, error) {
 		}
 	}
 	return fis, err
+}
+
+func (fs MountFS) Chtimes(name string, atime, mtime time.Time) error {
+	panic("todo")
+	return nil
 }

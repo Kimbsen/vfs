@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/blang/vfs"
+	"github.com/Kimbsen/vfs"
 )
 
 type myFS struct {

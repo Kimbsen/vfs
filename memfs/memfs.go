@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/blang/vfs"
+	"github.com/Kimbsen/vfs"
 )
 
 var (
@@ -314,6 +314,16 @@ func (fs *MemFS) Remove(name string) error {
 	}
 
 	delete(fiParent.childs, fiNode.name)
+	return nil
+}
+
+func (fs *MemFS) Chtimes(name string, atime, mtime time.Time) error {
+	name = filepath.Clean(name)
+	_, fi, err := fs.fileInfo(name)
+	if err != nil {
+		return err
+	}
+	fi.modTime = mtime
 	return nil
 }
 

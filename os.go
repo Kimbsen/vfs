@@ -3,6 +3,7 @@ package vfs
 import (
 	"io/ioutil"
 	"os"
+	"time"
 )
 
 // OsFS represents a filesystem backed by the filesystem of the underlying OS.
@@ -51,4 +52,8 @@ func (fs OsFS) Lstat(name string) (os.FileInfo, error) {
 // ReadDir wraps ioutil.ReadDir
 func (fs OsFS) ReadDir(path string) ([]os.FileInfo, error) {
 	return ioutil.ReadDir(path)
+}
+
+func (fs OsFS) Chtimes(name string, atime, mtime time.Time) error {
+	return os.Chtimes(name, atime, mtime)
 }
